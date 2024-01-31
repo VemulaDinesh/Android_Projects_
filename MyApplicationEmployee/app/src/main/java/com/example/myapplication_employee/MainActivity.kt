@@ -16,23 +16,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editDesignation: EditText
     private lateinit var editExperience: EditText
     private lateinit var editAddress: EditText
-    private lateinit var dataSource: EmployeeDataSource
-   private lateinit var dbHelper: DBHelper
+    private lateinit var dbHelper: DBHelper
+
    var isEditing=false
     var employeeId: Long=1
     override fun onCreate(savedInstanceState: Bundle?) {
         isEditing=false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        dataSource = EmployeeDataSource(this)
-        dbHelper=DBHelper(this)
+        dbHelper= DBHelper(this)
         createEmployee = findViewById(R.id.btn_create)
         editEmployeeName = findViewById(R.id.et_employeename)
         editAge = findViewById(R.id.et_Age)
         editDesignation = findViewById(R.id.et_Designation)
         editExperience = findViewById(R.id.et_Experience)
         editAddress = findViewById(R.id.et_Adress)
-
         editAge.inputType = InputType.TYPE_CLASS_NUMBER
         editExperience.inputType = InputType.TYPE_CLASS_NUMBER
 
@@ -63,11 +61,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 dbHelper.updateEmployee(updatedEmployee)
-
-                val intent = Intent(this, SecondActivity::class.java)
-                startActivity(intent)
                 finish()
-
             }
             else
             {
@@ -78,9 +72,8 @@ class MainActivity : AppCompatActivity() {
                     yearsOfExperience = editExperience.text.toString().toInt(),
                     address=editAddress.text.toString()
                 )
-                val id = dataSource.insertEmployee(employee)
+                val id = dbHelper.insertEmployee(employee)
                 Toast.makeText(this, "Employee added with ID: $id", Toast.LENGTH_SHORT).show()
-
                 // Start SecondActivity after adding the employee
                 startActivity(Intent(this, SecondActivity::class.java))
             }

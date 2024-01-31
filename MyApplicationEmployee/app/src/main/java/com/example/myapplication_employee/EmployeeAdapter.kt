@@ -1,6 +1,7 @@
 // EmployeeAdapter.kt (Updated)
 package com.example.myapplication_employee
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,15 @@ class EmployeeAdapter(
     private val editClickListener: OnEditClickListener,
     private val deleteClickListener: OnDeleteClickListener
 ) : RecyclerView.Adapter<EmployeeAdapter.ViewHolder>() {
-
     interface OnEditClickListener {
-        fun onEditClick(employeeId: Long)
+        fun onEditClick(employeeId: Long,position: Int)
     }
 
     interface OnDeleteClickListener {
-        fun onDeleteClick(employeeId: Long)
+        fun onDeleteClick(employeeId: Long,position: Int)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val employeeName: TextView = itemView.findViewById(R.id.tv_employeename)
         val employeeId: TextView = itemView.findViewById(R.id.tv_employeeid)
         val age: TextView = itemView.findViewById(R.id.tv_Age)
@@ -48,17 +48,22 @@ class EmployeeAdapter(
         holder.experience.text = "Experience: ${employee.yearsOfExperience} years"
         holder.address.text = "Address: ${employee.address}"
         holder.editBtn.setOnClickListener {
-            editClickListener.onEditClick(employee.employeeId)
+            editClickListener.onEditClick(employee.employeeId,position)
         }
 
         holder.deleteBtn.setOnClickListener {
-            deleteClickListener.onDeleteClick(employee.employeeId)
+            deleteClickListener.onDeleteClick(employee.employeeId,position)
         }
     }
-    fun updateData(newEmployees: List<Employee>)
+    fun updateDataRemoved(newEmployees: List<Employee>,position:Int)
     {
-        employees=newEmployees
-        notifyDataSetChanged()
+        employees= newEmployees
+       notifyItemRemoved(position)
+    }
+    fun updateEdit(newEmployees: List<Employee>,position:Int)
+    {
+        employees= newEmployees
+        notifyItemChanged(position)
     }
 
     override fun getItemCount(): Int {

@@ -10,48 +10,45 @@ import androidx.recyclerview.widget.RecyclerView
 class SecondActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var dataSource: EmployeeDataSource
-    private lateinit var dbHelper: DBHelper
     private lateinit var adapter: EmployeeAdapter
+    private lateinit var dbHelper: DBHelper
+    public var pos:Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
-        dataSource = EmployeeDataSource(this)
+        //dataSource = EmployeeDataSource(this)
         recyclerView = findViewById(R.id.recyclerView)
-
         // Set up RecyclerView
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-
+        dbHelper = DBHelper(this)
         // Retrieve all employees from the database
-        var employees = dataSource.getAllEmployees()
+        val employees = dbHelper.getAllEmployees()
         //dataSource.deleteAllData()
         // Create and set the adapter for the RecyclerView
          adapter = EmployeeAdapter(employees,
             object : EmployeeAdapter.OnEditClickListener {
-                override fun onEditClick(employeeId: Long) {
+                override fun onEditClick(employeeId: Long,position:Int) {
                     val intent = Intent(this@SecondActivity, MainActivity::class.java)
                     intent.putExtra("edit_employee_id", employeeId)
+                    pos=position
                     startActivity(intent)
                 }
             },
             object : EmployeeAdapter.OnDeleteClickListener {
-                override fun onDeleteClick(employeeId: Long) {
-
+                override fun onDeleteClick(employeeId: Long,position:Int) {
                     dbHelper.removeEmployee(employeeId)
-
-                    adapter.updateData(dbHelper.getAllEmployees())
+                    adapter.updateDataRemoved(dbHelper.getAllEmployees(),position)
                 }
             }
          )
-
         recyclerView.adapter = adapter
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        adapter.updateData(dbHelper.getAllEmployees())
-//    }
+    override fun onResume() {
+        super.onResume()
+        adapter.updateEdit(dbHelper.getAllEmployees(),pos)
+    }
 
 }

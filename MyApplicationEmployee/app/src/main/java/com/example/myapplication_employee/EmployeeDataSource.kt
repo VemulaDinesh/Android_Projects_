@@ -17,4 +17,18 @@ class EmployeeDataSource(context: Context) {
     fun deleteAllData() {
         dbHelper.deleteAllData()
     }
+    fun removeEmployee(employeeId: Long)
+    {
+        dbHelper.removeEmployee(employeeId)
+    }
+    fun getEmployeeById(employeeId: Long) :Employee?
+    {
+        return dbHelper.getEmployeeById(employeeId)
+    }
+   fun updateEmployee(updatedEmployee: Employee)
+   {
+       dbHelper.updateEmployee(updatedEmployee)
+   }
+
+
 }
