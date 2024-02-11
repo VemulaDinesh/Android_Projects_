@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/titleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:textSize="16sp"
+    android:textColor="@android:color/black"
+    android:layout_marginBottom="8dp"
+    android:paddingBottom="10dp"
+    android:text="Title" />
+<GridView
+    android:id="@+id/gridRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/titleTextView"
+    android:numColumns="3"
+    android:verticalSpacing="8dp"
+    android:horizontalSpacing="8dp"
+    android:padding="8dp"
+    android:scrollbars="vertical"
+    android:gravity="center"/>
+
+</RelativeLayout>
