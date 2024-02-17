@@ -83,8 +83,10 @@ class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<Re
                 val gridViewHolder = holder as GridViewHolder
                 gridViewHolder.titleTextView.text = section.title
                 val imageUrls = section.cards.map { it.imageUrl }
-                val noOfColoumns=section.no_of_coloumns
-                gridViewHolder.bind(imageUrls,noOfColoumns)
+                val noOfColoumns=section.numberOfColumns
+                if (noOfColoumns != null) {
+                    gridViewHolder.bind(imageUrls,noOfColoumns)
+                }
             }
         }
     }
@@ -94,9 +96,9 @@ class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<Re
     override fun getItemViewType(position: Int): Int {
         val section = sections[position]
         return when (section.type) {
-            "Card" -> VIEW_TYPE_IMAGE
-            "Carousal" -> VIEW_TYPE_CAROUSEL
-            "Grid" -> VIEW_TYPE_GRID
+            "banner" -> VIEW_TYPE_IMAGE
+            "carousel" -> VIEW_TYPE_CAROUSEL
+            "grid" -> VIEW_TYPE_GRID
             else -> throw IllegalArgumentException("Invalid section type")
         }
     }

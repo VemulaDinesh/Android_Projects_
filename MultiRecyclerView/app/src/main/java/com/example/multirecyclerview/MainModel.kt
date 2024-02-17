@@ -1,22 +1,25 @@
 package com.example.multirecyclerview
 
+
 data class Card(
-    val type: String,
+    val title: String,
+    val subtitle: String?,
+    val imageUrl: String,
     val deeplink: String,
-    val imageUrl: String
+    val type: String,
+    val id: Int
 )
 
 data class Section(
-    val type: String,
-    val no_of_coloumns:Int,
     val title: String,
     val subtitle: String,
-    val cards: List<Card>
+    val type: String,
+    val cards: List<Card>,
+    val numberOfColumns: Int? = 1
 )
 
 data class MainData(
     val sections: List<Section>,
-    val version: String,
+    val version: Int,
     val variant: String
 )
-
