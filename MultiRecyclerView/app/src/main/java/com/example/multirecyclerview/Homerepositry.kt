@@ -11,5 +11,8 @@ class HomeRepository {
         val response = retroClient.getSections()
         return response
     }
+    suspend fun getMediaDetails(id: Int): MediaResponse? {
+        return retroClient.getMediaDetails(id)
+    }
 }
 

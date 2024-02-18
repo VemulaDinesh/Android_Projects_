@@ -1,9 +1,13 @@
 package com.example.multirecyclerview
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat.startActivity
+//import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.multirecyclerview.databinding.ItemCarouselCellBinding
@@ -29,6 +33,12 @@ class CarouselAdapter(private val imageUrls: List<String>) : RecyclerView.Adapte
                 .load(imageUrl) // Error image if the load fails
                 .centerInside()
                 .into(binding.carouselImageView)
+            binding.root.setOnClickListener{
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("entertainment://consumer/bottomsheet?id=1"))
+                binding.root.context.startActivity(intent)
+            }
+
         }
+
     }
 }

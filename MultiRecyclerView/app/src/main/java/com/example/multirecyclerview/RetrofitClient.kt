@@ -2,7 +2,7 @@ package com.example.multirecyclerview
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
-    private const val BASE_URL = "https://entertainment.wiremockapi.cloud/"
+    private const val BASE_URL = "https://entertainment.wiremockapi.cloud/mass-media/"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
