@@ -6,30 +6,29 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.multirecyclerview.databinding.ItemCarouselCellBinding
+import com.example.multirecyclerview.databinding.ItemCarouselViewBinding
 
 class CarouselAdapter(private val imageUrls: List<String>) : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_carousel_cell, parent, false)
-        return CarouselViewHolder(view)
+        val binding=ItemCarouselCellBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return CarouselViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
         val imageUrl = imageUrls[position]
-        holder.bind(imageUrl,500,500)
+        holder.bind(imageUrl)
     }
 
     override fun getItemCount(): Int = imageUrls.size
 
-    inner class CarouselViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val carouselImageView: ImageView = itemView.findViewById(R.id.carouselImageView)
-
-        fun bind(imageUrl: String, width: Int, height: Int) {
+    inner class CarouselViewHolder(private val binding: ItemCarouselCellBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(imageUrl: String) {
             Glide.with(itemView.context)
-                .load(imageUrl)
-                .override(width, height) // Error image if the load fails
-                .into(carouselImageView)
-            //gridImageView.setImageResource(R.drawable.img)
+                .load(imageUrl) // Error image if the load fails
+                .centerInside()
+                .into(binding.carouselImageView)
         }
     }
 }

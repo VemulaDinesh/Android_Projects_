@@ -10,51 +10,57 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.multirecyclerview.databinding.ItemCarouselViewBinding
+import com.example.multirecyclerview.databinding.ItemGridViewBinding
+import com.example.multirecyclerview.databinding.ItemImageViewBinding
 
 class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-    }
-
-    inner class CarouselViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val recyclerView: RecyclerView = itemView.findViewById(R.id.carouselRecyclerView)
-        val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
-        fun bind(imageUrls: List<String>) {
-            val adapter = CarouselAdapter(imageUrls)
-            recyclerView.adapter = adapter
-            val layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.layoutManager = layoutManager
+    inner class ImageViewHolder(private val binding: ItemImageViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(section: Section) {
+            binding.titleTextView.text = section.title
+            val imageUrl = section.cards[0].imageUrl
+            Glide.with(binding.imageView.context)
+                .load(imageUrl)
+                .centerInside()
+                .into(binding.imageView)
         }
     }
 
-    inner class GridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val gridView: GridView = itemView.findViewById(R.id.gridRecyclerView )
-        val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
-        fun bind(imageUrls: List<String>,noOfColumns:Int) {
-//            val layoutManager = GridLayoutManager(itemView.context, noOfColoumns)
-//            recyclerView.layoutManager = layoutManager
-//            val adapter = GridAdapter(imageUrls)
-//            recyclerView.adapter = adapter
-            val adapter = GridViewAdapter(itemView.context, imageUrls, noOfColumns)
-            gridView.adapter = adapter
-            gridView.numColumns = noOfColumns
+    inner class CarouselViewHolder(private val binding: ItemCarouselViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(section: Section) {
+            binding.titleTextView.text = section.title
+            val imageUrls = section.cards.map { it.imageUrl }
+            val adapter = CarouselAdapter(imageUrls)
+            binding.carouselRecyclerView.adapter = adapter
+            val layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+            binding.carouselRecyclerView.layoutManager = layoutManager
+        }
+    }
+
+    inner class GridViewHolder(private val binding: ItemGridViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(section: Section) {
+            binding.titleTextView.text = section.title
+            val imageUrls = section.cards.map { it.imageUrl }
+            val noOfColumns = section.numberOfColumns ?: 1
+            val adapter = GridViewAdapter(binding.root.context, imageUrls, noOfColumns)
+            binding.gridRecyclerView.adapter = adapter
+            binding.gridRecyclerView.numColumns = noOfColumns
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_IMAGE -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image_view, parent, false)
-                ImageViewHolder(view)
+                val binding = ItemImageViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ImageViewHolder(binding)
             }
             VIEW_TYPE_CAROUSEL -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_carousel_view, parent, false)
-                CarouselViewHolder(view)
+                val binding = ItemCarouselViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                CarouselViewHolder(binding)
             }
             VIEW_TYPE_GRID -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_grid_view, parent, false)
-                GridViewHolder(view)
+                val binding = ItemGridViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                GridViewHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -64,29 +70,16 @@ class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<Re
         val section = sections[position]
         when (holder.itemViewType) {
             VIEW_TYPE_IMAGE -> {
-           val imageViewHolder = holder as ImageViewHolder
-                imageViewHolder.titleTextView.text = section.title
-                val imageUrl = section.cards[0].imageUrl
-                Glide.with(imageViewHolder.itemView.context)
-                    .load(imageUrl)
-                    .override(500, 500)
-                    .into(imageViewHolder.imageView)
-                //imageViewHolder.imageView.setImageResource(R.drawable.img)
+                val imageViewHolder = holder as ImageViewHolder
+                imageViewHolder.bind(section)
             }
             VIEW_TYPE_CAROUSEL -> {
                 val carouselViewHolder = holder as CarouselViewHolder
-                carouselViewHolder.titleTextView.text = section.title
-                val imageUrls = section.cards.map { it.imageUrl }
-                carouselViewHolder.bind(imageUrls)
+                carouselViewHolder.bind(section)
             }
             VIEW_TYPE_GRID -> {
                 val gridViewHolder = holder as GridViewHolder
-                gridViewHolder.titleTextView.text = section.title
-                val imageUrls = section.cards.map { it.imageUrl }
-                val noOfColoumns=section.numberOfColumns
-                if (noOfColoumns != null) {
-                    gridViewHolder.bind(imageUrls,noOfColoumns)
-                }
+                gridViewHolder.bind(section)
             }
         }
     }
@@ -102,9 +95,6 @@ class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<Re
             else -> throw IllegalArgumentException("Invalid section type")
         }
     }
-
-
-
     companion object {
         private const val VIEW_TYPE_IMAGE = 0
         private const val VIEW_TYPE_CAROUSEL = 1
