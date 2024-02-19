@@ -1,9 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MultiRecyclerView" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.MultiRecyclerView" parent="Theme.AppCompat.Light">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:windowBackground">@color/white</item>
+</style>
+
+    <style name="DialogAnimation">
+    <item name="android:windowEnterAnimation">@anim/slide_bottom_in</item>
+    <item name="android:windowExitAnimation">@anim/slide_bottom_out</item>
     </style>
 
-    <style name="Theme.MultiRecyclerView" parent="Base.Theme.MultiRecyclerView" />
+    <style name="AppTheme.Translucent" parent="Theme.AppCompat.NoActionBar">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

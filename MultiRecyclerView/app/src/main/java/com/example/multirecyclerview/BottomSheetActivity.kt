@@ -22,6 +22,7 @@ class BottomSheetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = BottomSheetBinding.inflate(layoutInflater) // Update to your actual layout binding class
+        //binding.progressBar.visibility= View.VISIBLE
         setContentView(binding.root)
         getDeeplinkData()
         val repository = HomeRepository()
@@ -44,6 +45,10 @@ class BottomSheetActivity : AppCompatActivity() {
 
             }
         })
+        //binding.progressBar.visibility= View.GONE
+        binding.view.setOnClickListener{
+            finish()
+        }
     }
     private fun getDeeplinkData() {
         if (intent.action == Intent.ACTION_VIEW) {

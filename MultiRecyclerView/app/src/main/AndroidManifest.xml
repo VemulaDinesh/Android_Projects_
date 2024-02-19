@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".BottomSheetActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.Translucent"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

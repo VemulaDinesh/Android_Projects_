@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.multirecyclerview.databinding.ItemCarouselCellBinding
 import com.example.multirecyclerview.databinding.ItemCarouselViewBinding
 
-class CarouselAdapter(private val imageUrls: List<String>) : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
+class CarouselAdapter(private val listOfCards: List<Card>) : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
         val binding=ItemCarouselCellBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -21,20 +21,20 @@ class CarouselAdapter(private val imageUrls: List<String>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
-        val imageUrl = imageUrls[position]
-        holder.bind(imageUrl)
+        val card = listOfCards[position]
+        holder.bind(card)
     }
 
-    override fun getItemCount(): Int = imageUrls.size
+    override fun getItemCount(): Int = listOfCards.size
 
     inner class CarouselViewHolder(private val binding: ItemCarouselCellBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(imageUrl: String) {
+        fun bind(card: Card) {
             Glide.with(itemView.context)
-                .load(imageUrl) // Error image if the load fails
+                .load(card.imageUrl) // Error image if the load fails
                 .centerInside()
                 .into(binding.carouselImageView)
             binding.root.setOnClickListener{
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("entertainment://consumer/bottomsheet?id=1"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(card.deeplink))
                 binding.root.context.startActivity(intent)
             }
 
