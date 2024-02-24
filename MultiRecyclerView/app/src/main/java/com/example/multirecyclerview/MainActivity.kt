@@ -2,12 +2,15 @@ package com.example.multirecyclerview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.multirecyclerview.databinding.ActivityMainBinding
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -15,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        binding.progressBar.visibility= View.VISIBLE
         setContentView(binding.root)
        binding.recyclerView.layoutManager = LinearLayoutManager(this)
         val repository=HomeRepository()
@@ -24,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             val adapter = MainAdapter(mainData.sections)
             binding.recyclerView.adapter = adapter
         })
+        binding.progressBar.visibility= View.GONE
     }
 }
 

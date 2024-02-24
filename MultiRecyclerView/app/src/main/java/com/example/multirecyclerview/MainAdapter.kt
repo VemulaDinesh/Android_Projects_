@@ -29,8 +29,8 @@ class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<Re
     inner class CarouselViewHolder(private val binding: ItemCarouselViewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(section: Section) {
             binding.titleTextView.text = section.title
-            val imageUrls = section.cards.map { it.imageUrl }
-            val adapter = CarouselAdapter(imageUrls)
+            //val imageUrls = section.cards.map { it.imageUrl }
+            val adapter = CarouselAdapter(section.cards)
             binding.carouselRecyclerView.adapter = adapter
             val layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
             binding.carouselRecyclerView.layoutManager = layoutManager
@@ -40,9 +40,9 @@ class MainAdapter(private val sections: List<Section>) : RecyclerView.Adapter<Re
     inner class GridViewHolder(private val binding: ItemGridViewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(section: Section) {
             binding.titleTextView.text = section.title
-            val imageUrls = section.cards.map { it.imageUrl }
+            //val imageUrls = section.cards.map { it.imageUrl }
             val noOfColumns = section.numberOfColumns ?: 1
-            val adapter = GridViewAdapter(binding.root.context, imageUrls, noOfColumns)
+            val adapter = GridViewAdapter(binding.root.context, section.cards, noOfColumns)
             binding.gridRecyclerView.adapter = adapter
             binding.gridRecyclerView.numColumns = noOfColumns
         }
